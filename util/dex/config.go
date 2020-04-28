@@ -78,7 +78,9 @@ func GenerateDexConfigYAML(settings *settings.ArgoCDSettings) ([]byte, error) {
 		if !ok {
 			return nil, fmt.Errorf("malformed Dex configuration found")
 		}
-		connectorCfg["redirectURI"] = dexRedirectURL
+		if _, hasCfg := connectorCfg["redirectURI"]; !hasCfg {
+			connectorCfg["redirectURI"] = dexRedirectURL
+		}
 		connector["config"] = connectorCfg
 		connectors[i] = connector
 	}
